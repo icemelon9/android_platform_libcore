@@ -27,27 +27,74 @@ import java.nio.ByteBuffer;
  * 
  */
 public final class Taint {
+	// modified by haichen
+	//public static final int TAINT_COUNTER_MASK	= 0x007FFFFF;
 
     public static final int TAINT_CLEAR         = 0x00000000;
-    public static final int TAINT_LOCATION      = 0x00000001;
-    public static final int TAINT_CONTACTS      = 0x00000002;
-    public static final int TAINT_MIC           = 0x00000004;
-    public static final int TAINT_PHONE_NUMBER  = 0x00000008;
-    public static final int TAINT_LOCATION_GPS  = 0x00000010;
-    public static final int TAINT_LOCATION_NET  = 0x00000020;
-    public static final int TAINT_LOCATION_LAST = 0x00000040;
-    public static final int TAINT_CAMERA        = 0x00000080;
-    public static final int TAINT_ACCELEROMETER = 0x00000100;
-    public static final int TAINT_SMS           = 0x00000200;
-    public static final int TAINT_IMEI          = 0x00000400;
-    public static final int TAINT_IMSI          = 0x00000800;
-    public static final int TAINT_ICCID         = 0x00001000;
-    public static final int TAINT_DEVICE_SN     = 0x00002000;
-    public static final int TAINT_ACCOUNT       = 0x00004000;
-    public static final int TAINT_HISTORY       = 0x00008000;
-    
+	public static final int TAINT_CONTROL_FLOW	= 0x80000000;
+    public static final int TAINT_LOCATION      = 0x0; //0x00000001;
+    public static final int TAINT_CONTACTS      = 0x0; //0x00000002;
+    public static final int TAINT_MIC           = 0x01000000; //0x00000004;
+    public static final int TAINT_PHONE_NUMBER  = 0x0; //0x00000008;
+    public static final int TAINT_LOCATION_GPS  = 0x40000000; //0x00000010;
+    public static final int TAINT_LOCATION_NET  = 0x20000000; //0x00000020;
+    public static final int TAINT_LOCATION_LAST = 0x0; //0x00000040;
+    public static final int TAINT_CAMERA        = 0x0; //0x00000080;
+    public static final int TAINT_ACCELEROMETER = 0x10000000; //0x00000100;
+	public static final int TAINT_MAGNETIC_FIELD= 0x08000000; // added
+	public static final int TAINT_GYROSCOPE		= 0x04000000; // added;
+	public static final int TAINT_LIGHT			= 0x02000000; // added;
+    public static final int TAINT_SMS           = 0x0; //0x00000200;
+    public static final int TAINT_IMEI          = 0x0; //0x00000400;
+    public static final int TAINT_IMSI          = 0x0; //0x00000800;
+    public static final int TAINT_ICCID         = 0x0; //0x00001000;
+    public static final int TAINT_DEVICE_SN     = 0x0; //0x00002000;
+    public static final int TAINT_ACCOUNT       = 0x0; //0x00004000;
+    public static final int TAINT_HISTORY       = 0x0; //0x00008000;
+
     // how many bytes of tainted network output data to print to log?
     public static final int dataBytesToLog = 100;
+
+	/* <--------------- part added by haichen begins ------------- */
+	/**
+	 * Clear the target float array's taint tag.
+	 * 
+	 * @param array
+	 * 		the target float array
+	 */	 
+	native public static void clearTaintFloatArray(float[] array);
+
+	native public static int getTaintBooleanArrayIndex(boolean[] array);
+	native public static int getTaintByteArrayIndex(byte[] array);
+	native public static int getTaintCharArrayIndex(char[] array);
+	//native public static int getTaintDirectByteBufferIndex(java.nio.ByteBuffer);
+	native public static int getTaintDoubleArrayIndex(double[] array);
+	native public static int getTaintFloatArrayIndex(float[] array);
+	native public static int getTaintIntArrayIndex(int[] array);
+	native public static int getTaintLongArrayIndex(long[] array);
+	native public static int getTaintObjectArrayIndex(java.lang.Object[] array);
+	native public static int getTaintShortArrayIndex(short[] array);
+
+	native public static boolean setTaintBoolean(boolean val, int tag);
+	native public static void setTaintBooleanArray(boolean[] array, int tag);
+    native public static byte setTaintByte(byte val, int tag);
+    native public static void setTaintByteArray(byte[] val, int tag);
+    native public static char setTaintChar(char val, int tag);
+    native public static void setTaintCharArray(char[] array, int tag);
+    native public static double setTaintDouble(double val, int tag);
+    native public static void setTaintDoubleArray(double[] array, int tag);
+    native public static float setTaintFloat(float val, int tag);
+    native public static void setTaintFloatArray(float[] array, int tag);
+    native public static int setTaintInt(int val, int tag);
+    native public static void setTaintIntArray(int[] array, int tag);
+    native public static long setTaintLong(long val, int tag);
+    native public static void setTaintLongArray(long[] val, int tag);
+    native public static void setTaintObjectArray(java.lang.Object[] array, int tag);
+    native public static void setTaintShortArray(short[] array, int tag);
+    native public static void setTaintString(java.lang.String str, int tag);
+
+
+	/* ---------------- part added by haichen ends --------------> */
 
     /**
      * Updates the target String's taint tag.
